@@ -10,6 +10,7 @@ const { register } = require("./controllers/UserControler");
 //Middlewares
 //Validate User
 const validade = require("./middlewares/handleValidation");
+const {userCreateValidation} = require("./middlewares/userValidations");
 
 // UseCases declaration area (Folder useCases)
 
@@ -18,6 +19,7 @@ router.get("/", testRoute);
 
 // User Routes
 
-router.get("/register", validade, register);
+
+router.post("/register", userCreateValidation() , validade, register);
 
 module.exports = router;

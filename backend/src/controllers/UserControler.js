@@ -19,7 +19,7 @@ const generateToken = (id) => {
 // Register user and Sing In
 
 const register = async (req, res) => {
-    res.send("Rota de registro")
+    
     
 }
 
