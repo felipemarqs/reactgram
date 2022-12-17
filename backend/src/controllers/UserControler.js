@@ -56,6 +56,8 @@ const register = async (req, res) => {
   });
 };
 
+
+//Login user
 const login = async (req, res) => {
   const { email, password } = req.body;
 
@@ -84,14 +86,22 @@ const login = async (req, res) => {
   });
 };
 
+// get current user
 const getCurrentLoggedUser = async (req, res) => {
 
   const user = req.user
   res.status(200).json(user)
 }
 
+//Update user
+
+const update = (req, res) => {
+  res.send("update user")
+}
+
 module.exports = {
   register,
   login,
   getCurrentLoggedUser,
+  update
 };

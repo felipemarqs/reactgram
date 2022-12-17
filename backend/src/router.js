@@ -5,14 +5,15 @@ const router = express();
 const testRoute = require("./app/useCases/testRoute");
 
 // User routers
-const { register, login ,getCurrentLoggedUser } = require("./controllers/UserControler");
+const { register, login , getCurrentLoggedUser ,update } = require("./controllers/UserControler");
 
 
 //Middlewares
 //Validate User
 const validate = require("./middlewares/handleValidation");
-const {userCreateValidation , loginValidation} = require("./middlewares/userValidations");
+const {userCreateValidation , loginValidation , userUpdateValidations} = require("./middlewares/userValidations");
 const authGuard = require("./middlewares/authGuard");
+const {imageUpload} = require("./middlewares/imageUpload");
 
 // UseCases declaration area (Folder useCases)
 
@@ -21,14 +22,25 @@ const authGuard = require("./middlewares/authGuard");
 
 // Create User
 
-router.post("/register", userCreateValidation() , validate, register);
+router.post("/users/register", userCreateValidation() , validate, register);
 
 // Login User
 
-router.post("/login", loginValidation(), validate , login)
+router.post("/users/login", loginValidation(), validate , login)
 
 //get current logged user
 router.get("/users/profile" , authGuard ,getCurrentLoggedUser)
+
+//Update user
+
+router.put(
+    "/users/",
+    authGuard,
+    userUpdateValidations(),
+    validate,
+    imageUpload.single("profileImage"),
+    update
+);
 
 
 //test
