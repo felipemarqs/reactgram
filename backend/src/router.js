@@ -16,7 +16,8 @@ const {
 //Photos routes
 
 const {
-  insertPhoto
+  insertPhoto,
+  deletePhoto
 } = require("./controllers/PhotoController")
 
 //Middlewares
@@ -65,6 +66,7 @@ router.get("/users/:id", getUserById);
 
 router.post("/photos/" , authGuard , imageUpload.single("image") , photoInsertValidation(), validate ,insertPhoto)
 
+router.delete("/photos/:id", authGuard , deletePhoto)
 
 
 module.exports = router;
