@@ -17,7 +17,7 @@ const authGuard = async (req, res, next) => {
 
         const verified = jwt.verify(token, jwtSecret)
 
-        console.log(verified)
+        
 
         req.user = await User.findById(verified.id).select("-password")
 
