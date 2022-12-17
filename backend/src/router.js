@@ -13,6 +13,12 @@ const {
   getUserById,
 } = require("./controllers/UserControler");
 
+//Photos routes
+
+const {
+  insertPhoto
+} = require("./controllers/PhotoController")
+
 //Middlewares
 //User Middlewares
 const validate = require("./middlewares/handleValidation");
@@ -56,6 +62,8 @@ router.get("/users/:id", getUserById);
 
 
 //Photos Routes 
+
+router.post("/photos/" , authGuard , imageUpload.single("image") , photoInsertValidation(), validate ,insertPhoto)
 
 
 
