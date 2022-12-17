@@ -5,21 +5,27 @@ const router = express();
 const testRoute = require("./app/useCases/testRoute");
 
 // User routers
-const { register } = require("./controllers/UserControler");
+const { register, login } = require("./controllers/UserControler");
+
 
 //Middlewares
 //Validate User
-const validade = require("./middlewares/handleValidation");
-const {userCreateValidation} = require("./middlewares/userValidations");
+const validate = require("./middlewares/handleValidation");
+const {userCreateValidation , loginValidation} = require("./middlewares/userValidations");
 
 // UseCases declaration area (Folder useCases)
 
-// testRoute
-router.get("/", testRoute);
 
-// User Routes
+// User Routes ======================================================================
+
+// Create User
+
+router.post("/register", userCreateValidation() , validate, register);
+
+// Login User
+
+router.post("/login", loginValidation(), validate , login)
 
 
-router.post("/register", userCreateValidation() , validade, register);
 
 module.exports = router;
