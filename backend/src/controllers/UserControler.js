@@ -84,7 +84,12 @@ const login = async (req, res) => {
   });
 };
 
+const getCurrentLoggedUser = async (req, res) => {
+  res.send("logged")
+}
+
 module.exports = {
   register,
   login,
+  getCurrentLoggedUser,
 };
