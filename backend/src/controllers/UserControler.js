@@ -85,7 +85,9 @@ const login = async (req, res) => {
 };
 
 const getCurrentLoggedUser = async (req, res) => {
-  res.send("logged")
+
+  const user = req.user
+  res.status(200).json(user)
 }
 
 module.exports = {
