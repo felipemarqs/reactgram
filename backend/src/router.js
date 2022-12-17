@@ -31,5 +31,5 @@ router.post("/login", loginValidation(), validate , login)
 router.get("/users/profile" , authGuard ,getCurrentLoggedUser)
 
 
-
+//test
 module.exports = router;
