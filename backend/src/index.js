@@ -14,7 +14,7 @@ const app = express();
  
  //Solve cors
 
- app.use(cors({ credentials: true , origin: `http://localhost:${port}`}));
+ app.use(cors(/* { credentials: true , origin: `http://localhost:3001`} */));
 
  //Upload directory
 

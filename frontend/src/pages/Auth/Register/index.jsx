@@ -6,7 +6,7 @@ import { Container } from "./styles";
 
 //Hooks
 import { useState, useEffect } from "react";
-//import { useSelector}
+import { useSelector , useDispatch} from 'react-redux'
 
 //Redux
 
@@ -18,6 +18,12 @@ export function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const dispatch = useDispatch();
+
+  const { loading , error } = useSelector((state) => state.auth);
+
+
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -28,8 +34,17 @@ export function Register() {
       confirmPassword,
     };
 
-    console.log(user);
+    //console.log(user);
+
+    dispatch(register(user))
   }
+
+  //Clear all states
+  useEffect(() => {
+
+    dispatch(reset())
+
+  }, [dispatch])
 
   return (
     <>

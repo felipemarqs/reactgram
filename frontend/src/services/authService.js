@@ -4,12 +4,13 @@ import { api, requestConfig } from "../utils/config";
 
 const register = async (data) => {
   const config = requestConfig("POST", data);
-
+  console.log(`${data} valor de data em authService register`)
   try {
-    const res = await fetch(api + "/users/register", config)
+    const res = await fetch(`${api}/users/register`, config)
       .then((res) => res.json())
       .catch((err) => err);
 
+    console.log(`${res} dsddsd`)
     if (res) {
       localStorage.setItem("user", JSON.stringify(res));
     }

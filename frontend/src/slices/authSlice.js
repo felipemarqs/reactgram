@@ -11,14 +11,19 @@ const initialState = {
 };
 
 // Register an user and Sing In
-export const register = createAsyncThunk(
+export const  register = createAsyncThunk(
   "auth/register",
   async (user, thunkAPI) => {
-    const data = await authService.register(user);
-
+    console.log(user)
+    const data = await authService.register(user)
+    
+    console.log(data + 'erlkrewrwrwerwerwer')
+    //console.log("caiu no register")
+    //console.log(data + 'dados do usuario')
     //Check for erros
 
     if (data.errors) {
+      
       return thunkAPI.rejectWithValue(data.errors[0]);
     }
 
@@ -40,7 +45,7 @@ export const authSlice = createSlice({
     builder
       .addCase(register.pending, (state) => {
         state.loading = true;
-        state.error = false;
+        state.error = null;
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
