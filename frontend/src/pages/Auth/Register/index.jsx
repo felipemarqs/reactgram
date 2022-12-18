@@ -6,6 +6,11 @@ import { Container } from "./styles";
 
 //Hooks
 import { useState, useEffect } from "react";
+//import { useSelector}
+
+//Redux
+
+import { register, reset } from "../../../slices/authSlice";
 
 export function Register() {
   const [name, setName] = useState("");
