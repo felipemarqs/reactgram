@@ -14,7 +14,14 @@ const initialState = {
 export const  register = createAsyncThunk(
   "auth/register",
   async (user, thunkAPI) => {
-    console.log(user)
+    const {name , email , password, confirmPassword } = user;
+    const userReq = {
+      name: name,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    }
+    console.log(user +' valor de user')
     const data = await authService.register(user)
     
     console.log(data + 'erlkrewrwrwerwerwer')
