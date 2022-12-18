@@ -34,6 +34,8 @@ const insertPhoto = async (req, res) => {
   return res.status(201).json(newPhoto);
 };
 
+//Delete a photo with a user related
+
 const deletePhoto = async (req, res) => {
   const { id } = req.params;
 
@@ -43,32 +45,125 @@ const deletePhoto = async (req, res) => {
     const photo = await Photo.findById(mongoose.Types.ObjectId(id));
 
     if (!photo.userId.equals(reqUser._id)) {
-      res.status(422).json({ errors: ["A error occurred while creating photo"] });
+      res.status(422).json({ errors: ["User not authenticated"] });
       return;
     }
 
     await Photo.findByIdAndDelete(photo._id);
-  res
-    .status(200)
-    .json({ id: photo._id, message: "Photo deleted successfully!" });
+    res
+      .status(200)
+      .json({ id: photo._id, message: "Photo deleted successfully!" });
+  } catch (error) {
+    res.status(404).json({ errors: ["Photo not found"] });
+  }
+};
+
+//get all photos
+const getAllPhotos = async (req, res) => {
+  const photos = await Photo.find({})
+    .sort([["createdAt, -1"]])
+    .exec();
+
+  res.status(200).json(photos);
+};
+
+//get user photos
+
+const getUserPhotos = async (req, res) => {
+  const { id } = req.params;
+  const photos = await Photo.find({ userId: id })
+    .sort([["createdAt, -1"]])
+    .exec();
+
+  res.status(200).json(photos);
+};
+
+//get photo by id
+
+const getPhotoById = async (req, res) => {
+  const { id } = req.params;
+  const photo = await Photo.findById(mongoose.Types.ObjectId(id));
+
+  if (!photo) {
+    res.status(404).json({ errors: ["Photo not found"] });
+    return;
+  }
+
+  res.status(200).json(photo);
+};
+
+//Update photo
+
+const updatePhoto = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title } = req.body;
+
+    const reqUser = req.user;
+    const photo = await Photo.findById(id);
+
+    if (!photo.userId.equals(reqUser._id)) {
+      res.status(422).json({ errors: ["User not authenticated"] });
+      return;
+    }
+
+    if (title) {
+      photo.title = title;
+    }
+
+    await photo.save();
+
+    res.status(200).json({ photo, message: "Photo updated successfully!" });
+  } catch (error) {
+    res.status(404).json({ errors: ["Photo not found"] });
+  }
+};
+
+//Like photo
+
+const likePhoto = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const reqUser = req.user;
+
+    const photo = await Photo.findById(id);
+
+    if ( photo.likes.includes(reqUser._id)) {
+
+      userIndex = photo.likes.indexOf(reqUser._id);
+
+      photo.likes.splice(reqUser._id)
+
+      photo.save();
+
+      res.status(200).json({ photoId: id, userId: reqUser._id, message: "Photo disliked successfully"})
+      
+    } else {
+
+      photo.likes.push(reqUser._id)
+      photo.save();
+
+      res.status(200).json({ photoId: id, userId: reqUser._id, message: "Photo liked successfully"})
+    }
+
+
+
   } catch (error) {
 
     res.status(404).json({ errors: ["Photo not found"] });
+
   }
   
-
-  //check if photo exists
-
- 
-
-  //Check if photo belongs to user
-
- 
-
-  
 };
+
+
 
 module.exports = {
   insertPhoto,
   deletePhoto,
+  getAllPhotos,
+  getUserPhotos,
+  getPhotoById,
+  updatePhoto,
+  likePhoto,
 };

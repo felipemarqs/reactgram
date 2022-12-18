@@ -17,7 +17,12 @@ const {
 
 const {
   insertPhoto,
-  deletePhoto
+  deletePhoto,
+  getAllPhotos,
+  getUserPhotos,
+  getPhotoById,
+  updatePhoto,
+  likePhoto,
 } = require("./controllers/PhotoController")
 
 //Middlewares
@@ -64,10 +69,26 @@ router.get("/users/:id", getUserById);
 
 //Photos Routes 
 
+//Upload Photo
 router.post("/photos/" , authGuard , imageUpload.single("image") , photoInsertValidation(), validate ,insertPhoto)
 
+//Delete Photo
 router.delete("/photos/:id", authGuard , deletePhoto)
 
+//Get all photos
+router.get("/photos/", getAllPhotos)
+
+//Get photo by user
+router.get("/photos/user/:id", authGuard, getUserPhotos)
+
+//Get photo by id
+router.get("/photos/:id", authGuard, getPhotoById)
+
+//Update photo
+router.put('/photos/:id', authGuard, updatePhoto)
+
+router.put('/photos/like/:id', authGuard, likePhoto)
 
 module.exports = router;
+
 
