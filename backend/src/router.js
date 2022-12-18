@@ -23,6 +23,8 @@ const {
   getPhotoById,
   updatePhoto,
   likePhoto,
+  commentPhoto,
+  searchPhotos
 } = require("./controllers/PhotoController")
 
 //Middlewares
@@ -37,7 +39,7 @@ const authGuard = require("./middlewares/authGuard");
 const { imageUpload } = require("./middlewares/imageUpload");
 
 //Photo Middlewares
-const {photoInsertValidation} = require("./middlewares/photoValidation");
+const {photoInsertValidation , photoCommentValidation} = require("./middlewares/photoValidation");
 
 // UseCases declaration area (Folder useCases)
 
@@ -78,6 +80,10 @@ router.delete("/photos/:id", authGuard , deletePhoto)
 //Get all photos
 router.get("/photos/", getAllPhotos)
 
+//Search photo
+router.get('/photos/search', authGuard, searchPhotos)
+
+
 //Get photo by user
 router.get("/photos/user/:id", authGuard, getUserPhotos)
 
@@ -87,7 +93,14 @@ router.get("/photos/:id", authGuard, getPhotoById)
 //Update photo
 router.put('/photos/:id', authGuard, updatePhoto)
 
+//Like photo
 router.put('/photos/like/:id', authGuard, likePhoto)
+
+//Comment photo
+router.put('/photos/comment/:id', authGuard , photoCommentValidation(), validate ,commentPhoto)
+
+
+
 
 module.exports = router;
 

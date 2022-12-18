@@ -128,35 +128,80 @@ const likePhoto = async (req, res) => {
 
     const photo = await Photo.findById(id);
 
-    if ( photo.likes.includes(reqUser._id)) {
-
+    if (photo.likes.includes(reqUser._id)) {
       userIndex = photo.likes.indexOf(reqUser._id);
 
-      photo.likes.splice(reqUser._id)
+      photo.likes.splice(reqUser._id);
 
-      photo.save();
+      await photo.save();
 
-      res.status(200).json({ photoId: id, userId: reqUser._id, message: "Photo disliked successfully"})
-      
+      res.status(200).json({
+        photoId: id,
+        userId: reqUser._id,
+        message: "Photo disliked successfully",
+      });
     } else {
+      photo.likes.push(reqUser._id);
+      await photo.save();
 
-      photo.likes.push(reqUser._id)
-      photo.save();
-
-      res.status(200).json({ photoId: id, userId: reqUser._id, message: "Photo liked successfully"})
+      res.status(200).json({
+        photoId: id,
+        userId: reqUser._id,
+        message: "Photo liked successfully",
+      });
     }
-
-
-
   } catch (error) {
-
     res.status(404).json({ errors: ["Photo not found"] });
-
   }
-  
 };
 
+//comment photo
 
+const commentPhoto = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { comment } = req.body;
+
+    const reqUser = req.user;
+
+    const user = await User.findById(reqUser._id);
+    const photo = await Photo.findById(id);
+
+    const userComment = {
+      comment,
+      userName: user.name,
+      userImage: user.image,
+      userId: user._id,
+    };
+
+    photo.comments.push(userComment);
+
+    await photo.save();
+
+    res.status(200).json({
+      comment: userComment,
+      message: "Comment posted successfully",
+    });
+  } catch (error) {
+    res.status(404).json({ errors: ["Photo not found"] });
+  }
+};
+
+//Search photo
+
+  const searchPhotos = async (req, res) => {
+   try {
+
+    const { q } = req.query;
+
+  const photos = await Photo.find({ title: new RegExp(q, "i")}).exec();
+  res.status(200).json(photos)
+
+   } catch (error) {
+    res.status(404).json({ errors: ["Error ocorred"] });
+   }
+
+};
 
 module.exports = {
   insertPhoto,
@@ -166,4 +211,6 @@ module.exports = {
   getPhotoById,
   updatePhoto,
   likePhoto,
+  commentPhoto,
+  searchPhotos,
 };
