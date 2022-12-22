@@ -14,23 +14,12 @@ const initialState = {
 export const  register = createAsyncThunk(
   "auth/register",
   async (user, thunkAPI) => {
-    const {name , email , password, confirmPassword } = user;
-    const userReq = {
-      name: name,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword
-    }
-    console.log(user +' valor de user')
+  
     const data = await authService.register(user)
     
-    console.log(data + 'erlkrewrwrwerwerwer')
-    //console.log("caiu no register")
-    //console.log(data + 'dados do usuario')
-    //Check for erros
+    
 
     if (data.errors) {
-      
       return thunkAPI.rejectWithValue(data.errors[0]);
     }
 

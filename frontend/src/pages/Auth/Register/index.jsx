@@ -1,5 +1,6 @@
 //Components
 import { Link } from "react-router-dom";
+import  {Message}  from "../../../components/Message";
 
 //Styles
 import { Container } from "./styles";
@@ -79,7 +80,12 @@ export function Register() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
             />
-          <input type="submit" value="Cadastrar" />
+          { !loading && <input type="submit" value="Cadastrar" />}
+          { loading && <input type="submit" value="Cadastrando..." disabled />}
+
+          {error && <Message msg={error} type="error"/>}
+          
+          
         </form>
         <p>
           {" "}

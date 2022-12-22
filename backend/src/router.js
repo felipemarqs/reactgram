@@ -46,7 +46,7 @@ const {photoInsertValidation , photoCommentValidation} = require("./middlewares/
 // User Routes 
 
 // Create User
-router.post("/users/register", /* userCreateValidation(), */ validate, register);
+router.post("/users/register",  userCreateValidation(),  validate, register);
 
 // Login User
 router.post("/users/login", loginValidation(), validate, login);
