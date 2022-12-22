@@ -1,13 +1,13 @@
 //Components
 import { Link } from "react-router-dom";
-import  {Message}  from "../../../components/Message";
+import { Message } from "../../../components/Message";
 
 //Styles
 import { Container } from "./styles";
 
 //Hooks
 import { useState, useEffect } from "react";
-import { useSelector , useDispatch} from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 
 //Redux
 
@@ -21,9 +21,7 @@ export function Register() {
 
   const dispatch = useDispatch();
 
-  const { loading , error } = useSelector((state) => state.auth);
-
-
+  const { loading, error } = useSelector((state) => state.auth);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -37,15 +35,13 @@ export function Register() {
 
     //console.log(user);
 
-    dispatch(register(user))
+    dispatch(register(user));
   }
 
   //Clear all states
   useEffect(() => {
-
-    dispatch(reset())
-
-  }, [dispatch])
+    dispatch(reset());
+  }, [dispatch]);
 
   return (
     <>
@@ -75,17 +71,15 @@ export function Register() {
             value={password}
           />
           <input
-           type="password"
+            type="password"
             placeholder="Confirme a senha"
             onChange={(e) => setConfirmPassword(e.target.value)}
             value={confirmPassword}
-            />
-          { !loading && <input type="submit" value="Cadastrar" />}
-          { loading && <input type="submit" value="Cadastrando..." disabled />}
+          />
+          {!loading && <input type="submit" value="Cadastrar" />}
+          {loading && <input type="submit" value="Cadastrando..." disabled />}
 
-          {error && <Message msg={error} type="error"/>}
-          
-          
+          {error && <Message msg={error} type="error" />}
         </form>
         <p>
           {" "}

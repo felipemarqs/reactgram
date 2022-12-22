@@ -10,8 +10,6 @@ const register = async (data) => {
     const res = await fetch(api + "/users/register", config)
     .then((res) => res.json())
     .catch((err) => err);
-
-   console.log(`${res} res`)
     if (res) {
       localStorage.setItem("user", JSON.stringify(res));
     }
@@ -23,8 +21,15 @@ const register = async (data) => {
   }
 };
 
+//Logout an user
+
+const logout = () => {
+  localStorage.removeItem("user");
+}
+
 const authService = {
     register,
+    logout,
 }
 
 export default authService;
