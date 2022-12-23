@@ -27,6 +27,14 @@ const logout = () => {
   localStorage.removeItem("user");
 }
 
+//Sing in a user
+const login = async (data) => {
+
+
+
+  
+};
+
 const authService = {
     register,
     logout,
