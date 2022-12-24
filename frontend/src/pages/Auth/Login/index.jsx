@@ -20,24 +20,22 @@ export function Login() {
   const dispatch = useDispatch()
   const { loading , error} = useSelector((state) => state.auth)
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-      const user = {
-        email,
-        password
-      }
+    const user = {
+      email,
+      password,
+    };
 
-      dispatch(login(user));
-   
-      //Clan all auth states
+    console.log(user);
 
-  
-  }
+    dispatch(login(user));
+  };
 
+  // Clean all auth states
   useEffect(() => {
     dispatch(reset());
-    console.log("reset finished");
   }, [dispatch]);
 
   return (

@@ -13,6 +13,7 @@ import { Footer } from "./components/Footer";
 import { Home } from "./pages/Home";
 import { Login } from "./pages/Auth/Login";
 import { Register } from "./pages/Auth/Register";
+import { EditProfile} from './pages/EditProfile/EditProfile'
 
 // Hooks
 import { useAuth } from "./hooks/useAuth";
@@ -36,6 +37,7 @@ function App() {
           <Route path="/" element={auth ? <Home/> : <Navigate to="/login"/>} />
           <Route path="/login" element={!auth ? <Login/> : <Navigate to="/"/>} />
           <Route path="/register" element={!auth ? <Register/> : <Navigate to="/"/>} />
+          <Route path="/profile" element={auth ? <EditProfile/> : <Navigate to="/login"/>}/>
         </Routes>
         </Container>
         <Footer />

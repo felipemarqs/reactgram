@@ -35,9 +35,7 @@ export const logout = createAsyncThunk("auth/logout", async () => {
 
 //Login a user
 
-export const login = createAsyncThunk(
-  "auth/login",
-  async (user, thunkAPI) => {
+export const login = createAsyncThunk("auth/login",async (user, thunkAPI) => {
 
 
   const data = await authService.login(user)
@@ -46,7 +44,7 @@ export const login = createAsyncThunk(
     return thunkAPI.rejectWithValue(data.errors[0])
   }
 
-
+  return data;
 })
 
 export const authSlice = createSlice({
@@ -57,6 +55,7 @@ export const authSlice = createSlice({
       state.loading = false;
       state.error = false;
       state.success = false;
+      console.log("reseted state")
     },
   },
   extraReducers: (builder) => {
