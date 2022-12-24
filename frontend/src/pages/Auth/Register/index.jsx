@@ -41,6 +41,7 @@ export function Register() {
   //Clear all states
   useEffect(() => {
     dispatch(reset());
+    console.log("reset finished register");
   }, [dispatch]);
 
   return (

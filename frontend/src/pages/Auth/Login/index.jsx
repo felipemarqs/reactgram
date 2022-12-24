@@ -10,13 +10,35 @@ import { Container } from "./styles";
 import { useState , useEffect} from "react";
 import { useSelector, useDispatch } from "react-redux";
 
+//Redux
+import { login , reset} from '../../../slices/authSlice'
+
 export function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch()
+  const { loading , error} = useSelector((state) => state.auth)
+
   function handleSubmit(e) {
     e.preventDefault();
+
+      const user = {
+        email,
+        password
+      }
+
+      dispatch(login(user));
+   
+      //Clan all auth states
+
+  
   }
+
+  useEffect(() => {
+    dispatch(reset());
+    console.log("reset finished");
+  }, [dispatch]);
 
   return (
     <>
@@ -39,7 +61,10 @@ export function Login() {
             onChange={(e) => setPassword(e.target.value)}
             value={password || ""}
           />
-          <input type="submit" value="Entrar" />
+          {!loading && <input type="submit" value="Entrar" />}
+          {loading && <input type="submit" value="Entrando..." disabled />}
+
+          {error && <Message msg={error} type="error" />}
         </form>
         <p>
           {" "}
