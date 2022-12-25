@@ -28,7 +28,7 @@ export const MsgSucessContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #155724;
+  color: #155724   ;
   background-color: #d4edda;
   border-color: #c3e6cb;
 `;
