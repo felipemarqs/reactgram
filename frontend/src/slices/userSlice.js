@@ -40,6 +40,15 @@ export const updateProfile = createAsyncThunk(
   }
 )
 
+//get user details
+
+export const getUserDetails = createAsyncThunk(
+  "user/getUserDetails",
+  async (id, thunkAPI) => {
+    const id = thunkAPI.getState().auth.user.id
+  }
+)
+
 export const userSlice = createSlice({
   name: "user",
   initialState,
