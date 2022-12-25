@@ -141,7 +141,7 @@ export const EditProfile = () => {
               disabled
               value={email || ""}
             />
-            <label htmlFor="">
+            <label htmlFor="" className="custom-file-upload">
               <span>Alterar imagem do Perfil:</span>
               <input type="file" onChange={handleFile} />
             </label>

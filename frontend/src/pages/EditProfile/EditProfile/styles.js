@@ -12,6 +12,8 @@ export const Container = styled.div`
     color: #ccc;
     margin: 1em;
   }
+
+  
 `;
 
 export const TitleContainer = styled.div`
