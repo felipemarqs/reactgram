@@ -3,15 +3,18 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 50%;
   margin: 0 auto;
+  
 `;
 
 export const Header = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  flex-wrap: wrap;
+  margin: 0 auto;
+  justify-content:center;
+  flex-direction: column;
   padding: 1em;
   border-bottom: 1px solid #363636;
+  max-width: 33%;
 
   img {
     margin-right: 1em;
@@ -28,6 +31,11 @@ export const HeaderDetails = styled.div``;
 export const NewPhotoForm = styled.div`
   padding: 1em;
   border-bottom: 1px solid #363636;
+  max-width: 50%;
+  align-items: center;
+  margin: 0 auto;
+  justify-content:center;
+  flex-direction: column;
 `;
 
 export const PhotosContainer = styled.div`
@@ -50,15 +58,6 @@ export const Photo = styled.div`
     vertical-align: top;
   }
 
-  .actions {
-    display: flex;
-    justify-content: space-around;
-    padding: 10px;
-  }
-
-  .actions svg {
-    cursor: pointer;
-  }
 
   .edit-photo {
     margin-bottom: 1em;
@@ -68,4 +67,15 @@ export const Photo = styled.div`
     width: 100%;
     margin-bottom: 1em;
   }
+`;
+
+export const ActionIcons = styled.div`
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+
+    svg {
+      cursor: pointer;
+    }
+
 `;

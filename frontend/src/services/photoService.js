@@ -30,9 +30,6 @@ const getUserPhotos = async (id, token) => {
   } catch (error) {
     console.log(error);
   }
-
-
-
 };
 
 
