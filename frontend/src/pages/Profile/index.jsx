@@ -1,4 +1,4 @@
-import { Container, Header, HeaderDetails } from "./styles";
+import { Container, Header, HeaderDetails , PhotosContainer , Photo , NewPhotoForm} from "./styles";
 
 import { uploads } from "../../utils/config";
 
@@ -15,7 +15,7 @@ import { useParams } from "react-router-dom";
 
 //redux
 import { getUserDetails } from "../../slices/userSlice";
-import { publishPhoto, resetMessage } from "../../slices/photoSlice";
+import { publishPhoto, resetMessage, getUserPhotos } from "../../slices/photoSlice";
 
 export const Profile = () => {
   const { id } = useParams();
@@ -42,6 +42,7 @@ export const Profile = () => {
   //Load user data
   useEffect(() => {
     dispatch(getUserDetails(id));
+    dispatch(getUserPhotos(id));
   }, [dispatch, id]);
 
   const handleFile = (e) => {
@@ -79,6 +80,7 @@ export const Profile = () => {
   }
 
   return (
+    <>
     <Container>
       <Header>
         {user.profileImage && (
@@ -92,7 +94,8 @@ export const Profile = () => {
       </Header>
 
       {id === userAuth._id && (
-        <>
+    
+        <NewPhotoForm>
           <div ref={newPhotoForm}>
             <h3>Compartilhe alguma photo</h3>
 
@@ -120,8 +123,26 @@ export const Profile = () => {
           </div>
           { errorPhoto && <Message msg={errorPhoto} type="error"></Message>}
           { messagePhoto && <Message msg={messagePhoto} type="success"></Message>}
-        </>
+        </NewPhotoForm>
+    
       )}
     </Container>
+
+    <Container>
+        <h2>Fotos</h2>
+        <PhotosContainer>
+          {photos && photos.map((photo) => (
+              <Photo  key={photo._id}>
+                {photo.image && (<img src={`${uploads}/photos/${photo.image}`} alt={photo.title}/>) }
+
+                {id === userAuth._id ? (<><p>Actions</p></>) : (<Link to={`/photos/${photo._id}`}></Link>)}
+
+              </Photo>
+          )) }
+
+          {photos.length === 0 && <p>Ainda não há fotos.</p>}
+        </PhotosContainer>
+    </Container>
+    </>
   );
 };
