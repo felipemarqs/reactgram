@@ -29,6 +29,7 @@ import {
   publishPhoto,
   resetMessage,
   getUserPhotos,
+  deletePhoto
 } from "../../slices/photoSlice";
 
 export const Profile = () => {
@@ -71,8 +72,14 @@ export const Profile = () => {
     setImage(image);
   };
 
+  //Function reset
+
+  
+
   const submitHandle = (e) => {
     e.preventDefault();
+
+    console.log(messagePhoto)
 
     const photoData = {
       title,
@@ -93,11 +100,41 @@ export const Profile = () => {
     setTimeout(() => {
       dispatch(resetMessage())
       setOpenForm(false);
-    }, 2000);
+    }, 3000);
   };
 
   const handleOpenForm = () => {
     setOpenForm(true);
+  };
+
+  //Delete a photo
+
+  const handleDelete = (id) => {
+    dispatch(deletePhoto(id));
+
+    
+
+    setTimeout(() => {
+      dispatch(resetMessage())
+    }, 2000);
+
+
+  };
+  //update a photo
+
+  const handleUpdate = (e) => {
+    e.preventDefault();
+
+  }
+
+  const handleEdit = (photo) => {
+    if (editPhotoForm.current.classList.contains("hide")) {
+      
+    }
+  }
+
+  const handleCancelEdit = (e) => {
+
   };
 
   if (loading) {
@@ -164,6 +201,37 @@ export const Profile = () => {
                   <Message msg={messagePhoto} type="success"></Message>
                 )}
               </NewPhotoForm>
+
+              <div  ref={editPhotoForm}>
+                <p>Editando:
+                  
+                </p>
+                {editImage && (
+                  <img src={`${uploads}/photos/${editImage}`} alt={editTitle}/>
+                )}
+
+                <form onSubmit={handleUpdate}>
+
+                
+                  
+                      <input
+                        type="text"
+                        
+                        onChange={(e) => setEditTitle(e.target.value)}
+                        value={editTitle || ""}
+                      />
+
+                      <input type="submit" value="teste" />
+                    <button className="cancel-btn" onClick={handleCancelEdit}>Cancelar edição</button>
+
+                    
+                
+
+                </form>
+
+                
+
+              </div>
            
           </>
         ) : (
@@ -191,8 +259,8 @@ export const Profile = () => {
                       <Link to={`/photos/${photo._id}`}>
                         <BsFillEyeFill/>
                       </Link>
-                        <BsPencilFill/>
-                        <BsXLg/>
+                        <BsPencilFill onClick={() => handleEdit(photo)}/>
+                        <BsXLg onClick={() => handleDelete(photo._id)}/>
                     </ActionIcons>
                   </>
                 ) : (
