@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 50%;
   margin: 0 auto;
+
   
 `;
 
@@ -66,6 +67,7 @@ export const Photo = styled.div`
   .edit-photo img {
     width: 100%;
     margin-bottom: 1em;
+    
   }
 `;
 
@@ -78,4 +80,20 @@ export const ActionIcons = styled.div`
       cursor: pointer;
     }
 
+`;
+
+export const EditPhotoForm = styled.div`
+
+display: flex;
+justify-content: center;
+
+
+    
+ img{
+    width: 250px;
+    height: 250px;
+    margin-bottom: 3em;
+    object-fit: cover;
+    margin: 0 auto;
+  }
 `;

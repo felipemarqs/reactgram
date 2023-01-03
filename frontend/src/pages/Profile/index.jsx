@@ -5,18 +5,22 @@ import {
   PhotosContainer,
   Photo,
   NewPhotoForm,
+  EditPhotoForm,
   ActionIcons,
 } from "./styles";
 
 import { uploads } from "../../utils/config";
 
-
-
 //components
 
 import { Message } from "../../components/Message";
 import { Link } from "react-router-dom";
-import { BsFillEyeFill, BsPencilFill, BsXLg, BsFillPlusSquareFill } from "react-icons/bs";
+import {
+  BsFillEyeFill,
+  BsPencilFill,
+  BsXLg,
+  BsFillPlusSquareFill,
+} from "react-icons/bs";
 
 //hooks
 import { useState, useEffect, useRef } from "react";
@@ -29,7 +33,8 @@ import {
   publishPhoto,
   resetMessage,
   getUserPhotos,
-  deletePhoto
+  deletePhoto,
+  updatePhoto,
 } from "../../slices/photoSlice";
 
 export const Profile = () => {
@@ -48,6 +53,10 @@ export const Profile = () => {
 
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
+
+  const [editId, setEditId] = useState("");
+  const [editImage, setEditImage] = useState("")
+  const [editTitle, setEditTitle] = useState("")
 
   //botao para enviar foto
   const [openForm, setOpenForm] = useState(false);
@@ -74,12 +83,10 @@ export const Profile = () => {
 
   //Function reset
 
-  
-
   const submitHandle = (e) => {
     e.preventDefault();
 
-    console.log(messagePhoto)
+    console.log(messagePhoto);
 
     const photoData = {
       title,
@@ -95,10 +102,9 @@ export const Profile = () => {
     dispatch(publishPhoto(formData));
 
     setTitle("");
-    
 
     setTimeout(() => {
-      dispatch(resetMessage())
+      dispatch(resetMessage());
       setOpenForm(false);
     }, 3000);
   };
@@ -112,29 +118,61 @@ export const Profile = () => {
   const handleDelete = (id) => {
     dispatch(deletePhoto(id));
 
-    
-
     setTimeout(() => {
-      dispatch(resetMessage())
+      dispatch(resetMessage());
     }, 2000);
-
-
   };
   //update a photo
 
   const handleUpdate = (e) => {
     e.preventDefault();
 
-  }
+     const photoData = {
+      title: editTitle,
+      id: editId
+     }
+
+     dispatch(updatePhoto(photoData))
+
+     setTimeout(() => {
+      dispatch(resetMessage());
+    }, 2000);
+
+
+  };
+
+
+  //Show or hide form
+
+  const hideOrShowForm = () => {
+
+    
+   /*  newPhotoForm.current.classList.toggle("hide"); */
+    editPhotoForm.current.classList.toggle("hide");
+  };
+
+  
+
+
 
   const handleEdit = (photo) => {
+
+
+    
+
+    
     if (editPhotoForm.current.classList.contains("hide")) {
-      
-    }
-  }
+      hideOrShowForm();
+    } 
+
+    setEditId(photo._id)
+    setEditTitle(photo.title)
+    setEditImage(photo.image)
+
+  };
 
   const handleCancelEdit = (e) => {
-
+    hideOrShowForm();
   };
 
   if (loading) {
@@ -152,92 +190,81 @@ export const Profile = () => {
           <HeaderDetails>
             <h2>{user.name}</h2>
             <p>{user.bio}</p>
-          </HeaderDetails>        
+          </HeaderDetails>
         </Header>
 
         {id === userAuth._id && (
           <>
-          <BsFillPlusSquareFill/> 
-          <button onClick={handleOpenForm}>Novo</button>
-      
+            <BsFillPlusSquareFill />
+            <button onClick={handleOpenForm}>Novo</button>
           </>
         )}
 
-      
         {openForm && id === userAuth._id ? (
           <>
-            
-              {" "}
-              <NewPhotoForm>
-                <div ref={newPhotoForm}>
-                  <h3>Compartilhe alguma photo</h3>
+            {" "}
+            <NewPhotoForm>
+              <div ref={newPhotoForm}>
+                <h3>Compartilhe alguma photo</h3>
 
-                  <form onSubmit={submitHandle}>
-                    <label>
-                      <span>Título para foto:</span>
-                      <input
-                        type="text"
-                        placeholder="Insira um título"
-                        onChange={(e) => setTitle(e.target.value)}
-                        value={title || ""}
-                      ></input>
-                    </label>
+                <form onSubmit={submitHandle}>
+                  <label>
+                    <span>Título para foto:</span>
+                    <input
+                      type="text"
+                      placeholder="Insira um título"
+                      onChange={(e) => setTitle(e.target.value)}
+                      value={title || ""}
+                    ></input>
+                  </label>
 
-                    <label>
-                      <span>Imagem:</span>
-                      <input type="file" onChange={handleFile} />
-                    </label>
+                  <label>
+                    <span>Imagem:</span>
+                    <input type="file" onChange={handleFile} />
+                  </label>
 
-                    {!loadingPhoto && <input type="submit" value="Enviar" />}
-                    {loadingPhoto && (
-                      <input type="submit" value="Enviando..." disabled />
-                    )}
-                  </form>
-                </div>
-                {errorPhoto && (
-                  <Message msg={errorPhoto} type="error"></Message>
-                )}
-                {messagePhoto && (
-                  <Message msg={messagePhoto} type="success"></Message>
-                )}
-              </NewPhotoForm>
-
-              <div  ref={editPhotoForm}>
-                <p>Editando:
-                  
-                </p>
-                {editImage && (
-                  <img src={`${uploads}/photos/${editImage}`} alt={editTitle}/>
-                )}
-
-                <form onSubmit={handleUpdate}>
-
-                
-                  
-                      <input
-                        type="text"
-                        
-                        onChange={(e) => setEditTitle(e.target.value)}
-                        value={editTitle || ""}
-                      />
-
-                      <input type="submit" value="teste" />
-                    <button className="cancel-btn" onClick={handleCancelEdit}>Cancelar edição</button>
-
-                    
-                
-
+                  {!loadingPhoto && <input type="submit" value="Enviar" />}
+                  {loadingPhoto && (
+                    <input type="submit" value="Enviando..." disabled />
+                  )}
                 </form>
-
-                
-
               </div>
-           
+              {errorPhoto && <Message msg={errorPhoto} type="error"></Message>}
+              {messagePhoto && (
+                <Message msg={messagePhoto} type="success"></Message>
+              )}
+            </NewPhotoForm>
+            
           </>
         ) : (
-          <>
+          
+          <EditPhotoForm>
+          <div className="edit-photo hide" ref={editPhotoForm}>
+              <p>Editando:</p>
+              {editImage && (
+                <img src={`${uploads}/photos/${editImage}`} alt={editTitle} />
+              )}
+
+              <form onSubmit={handleUpdate}>
+                <input
+                  type="text"
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  value={editTitle || ""}
+                />
+
+                <input type="submit" value="Atualizar" />
+                <button className="cancel-btn" onClick={handleCancelEdit}>
+                  Cancelar edição
+                </button>
+              </form>
+              {errorPhoto && <Message msg={errorPhoto} type="error"></Message>}
+              {messagePhoto && (
+                <Message msg={messagePhoto} type="success"></Message>
+              )}
+            </div>
             
-          </>
+            </EditPhotoForm>
+        
         )}
       </Container>
 
@@ -257,10 +284,10 @@ export const Profile = () => {
                   <>
                     <ActionIcons>
                       <Link to={`/photos/${photo._id}`}>
-                        <BsFillEyeFill/>
+                        <BsFillEyeFill />
                       </Link>
-                        <BsPencilFill onClick={() => handleEdit(photo)}/>
-                        <BsXLg onClick={() => handleDelete(photo._id)}/>
+                      <BsPencilFill onClick={() => handleEdit(photo)} />
+                      <BsXLg onClick={() => handleDelete(photo._id)} />
                     </ActionIcons>
                   </>
                 ) : (
