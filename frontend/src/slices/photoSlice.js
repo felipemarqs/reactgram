@@ -65,34 +65,39 @@ export const deletePhoto = createAsyncThunk(
 export const updatePhoto = createAsyncThunk(
   "photos/update",
   async (photoData, thunkAPI) => {
-
     const token = thunkAPI.getState().auth.user.token;
 
-    const data = await photoService.updatePhoto({title: photoData.title},
+    const data = await photoService.updatePhoto(
+      { title: photoData.title },
       photoData.id,
-      token);
+      token
+    );
 
     if (data.errors) {
       return thunkAPI.rejectWithValue(data.errors[0]);
     }
 
     return data;
-
-
   }
-)
+);
 
 //get a photo by id
 
 export const getPhoto = createAsyncThunk(
   "photo/getphoto",
-  async (id,thunkAPI) => {
+  async (id, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token;
-    const data = await photoService.getPhoto(id ,token)
+    const data = await photoService.getPhoto(id, token);
 
-    return data
+    return data;
   }
-)
+);
+
+export const like = createAsyncThunk("photo/like", async (id, thunkAPI) => {
+  const token = thunkAPI.getState().auth.user.token;
+  const data = photoService.like(id, token);
+  return data;
+});
 
 export const photoSlice = createSlice({
   name: "photo",
@@ -145,7 +150,6 @@ export const photoSlice = createSlice({
         state.error = null;
 
         state.message = "Foto enviada com sucesso!";
-        
 
         state.photos = state.photos.filter((photo) => {
           return photo._id !== action.payload.id;
@@ -165,17 +169,16 @@ export const photoSlice = createSlice({
         state.loading = false;
         state.success = true;
         state.error = null;
-        
+
         state.photos.map((photo) => {
           if (photo._id === action.payload.photo._id) {
-            return photo.title = action.payload.photo.title;
+            return (photo.title = action.payload.photo.title);
           }
 
           return photo;
         });
 
         state.message = "Foto atualizada com sucesso!";
-        
       })
       .addCase(updatePhoto.rejected, (state, action) => {
         state.loading = false;
@@ -191,7 +194,7 @@ export const photoSlice = createSlice({
         state.success = true;
         state.error = null;
         state.photo = action.payload;
-      })
+      });
   },
 });
 

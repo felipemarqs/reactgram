@@ -5,7 +5,7 @@ import { uploads } from "../../utils/config";
 //Components
 import { Message } from "../../components/Message";
 import { Link, useParams } from "react-router-dom";
-
+import { PhotoItem } from "../../components/PhotoItem";
 //Hooks
 import { useEffect, useState } from "react";
 
@@ -15,6 +15,7 @@ import { getPhoto } from "../../slices/photoSlice";
 
 //styles
 import { Container } from "./styles";
+
 
 export const Photo = () => {
   const { id } = useParams();
@@ -39,7 +40,9 @@ export const Photo = () => {
         return <p>Carregando...</p>
     }
     
-  return <Container>Photo Page</Container>;
+  return <Container>
+    <PhotoItem photo={photo}/>
+    </Container>;
 };
 
 
