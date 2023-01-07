@@ -41,7 +41,7 @@ export const Photo = () => {
     }
     
   return <Container>
-    <PhotoItem photo={photo}/>
+      <PhotoItem photo={photo}/>
     </Container>;
 };
 
