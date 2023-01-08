@@ -11,10 +11,11 @@ import { useEffect, useState } from "react";
 
 //redux
 import { useSelector, useDispatch } from "react-redux";
-import { getPhoto } from "../../slices/photoSlice";
+import { getPhoto , like} from "../../slices/photoSlice";
 
 //styles
 import { Container } from "./styles";
+import { LikeContainer } from "../../components/LikeContainer";
 
 
 export const Photo = () => {
@@ -36,12 +37,20 @@ export const Photo = () => {
 
     //Like and comment
 
+    const handleLike = () => {
+      console.log(photo.likes.length);
+      dispatch(like(photo._id))
+
+
+    }
+
     if ( loading ) {
         return <p>Carregando...</p>
     }
     
   return <Container>
       <PhotoItem photo={photo}/>
+      <LikeContainer photo={photo} user={user} handleLike={handleLike}/>
     </Container>;
 };
 
