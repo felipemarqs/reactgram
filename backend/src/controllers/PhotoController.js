@@ -170,7 +170,7 @@ const commentPhoto = async (req, res) => {
     const userComment = {
       comment,
       userName: user.name,
-      userImage: user.image,
+      userImage: user.profileImage,
       userId: user._id,
     };
 

@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { getPhoto, like, comment } from "../../slices/photoSlice";
 
 //styles
-import { Container } from "./styles";
+import { Container,AuthorContainer } from "./styles";
 import { LikeContainer } from "../../components/LikeContainer";
 
 export const Photo = () => {
@@ -47,18 +47,25 @@ export const Photo = () => {
 
   const handleComment = (e) => {
     e.preventDefault();
+
+    const commentData = {
+      comment: commentText,
+      id: photo._id,
+    };
+
+    dispatch(comment(commentData));
+
+    setCommentText("");
+
+    resetMessage();
   };
 
   if (loading) {
     return <p>Carregando...</p>;
   }
 
-  console.log("Valor do array Photo.comments" , photo.comments)
-
-
  
 
-  
   return (
     <Container>
       <PhotoItem photo={photo} />
@@ -68,20 +75,44 @@ export const Photo = () => {
         {message && <Message msg={message} type="success" />}
       </div>
 
-     <div className="comments">
-        <h3>Comentários ({photo.comments && photo.comments.length })</h3>
-        <form onSubmit={handleComment}>
-          <input
-            type="text"
-            placeholder="Insira um comentário..."
-            onChange={(e) => setCommentText(e.target.value)}
-            value={commentText || ""}
-          />
-          <input type="submit" value="Enviar" />
-        </form>
+      {photo.comments && (
+        <div className="comments">
+          <h3>Comentários ({photo.comments.length})</h3>
+          <form onSubmit={handleComment}>
+            <input
+              type="text"
+              placeholder="Insira um comentário..."
+              onChange={(e) => setCommentText(e.target.value)}
+              value={commentText || ""}
+            />
+            <input type="submit" value="Enviar" />
+          </form>
+          {photo.comments.length === 0 && <p>Ainda não há comentários.</p>}
+          {photo.comments.map((comment) => (
+           
+            <div className="comment" key={comment.comment}>
+               {console.log(comment)}
+              <AuthorContainer>
+                {comment.userImage && (
+                  <img
+                    src={`${uploads}/users/${comment.userImage}`}
+                    alt={comment.userName}
+                  />
+                )}
 
-        
-      </div>
+                <Link to={`/users/${comment.userId}`}>
+                  <p>{comment.userName}</p>
+                  <p className="commentText">{comment.comment}</p>
+                </Link>
+                
+              </AuthorContainer>
+
+            
+       
+            </div>
+          ))}
+        </div>
+      )}
     </Container>
   );
 };
