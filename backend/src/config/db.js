@@ -6,15 +6,18 @@ const dbPassword = process.env.DB_PASS
 //NzaYRfubYKzGO3nN
 //connection
 
-const conn = async () => {
-    try {
 
+
+const conn = async () => {
+    
+    try {
+        mongoose.set('strictQuery', true);
         dbCoon = await mongoose.connect(`mongodb+srv://${dbUser}:${dbPassword}@cluster0.pebfs79.mongodb.net/?retryWrites=true&w=majority`)
+        
          
         console.log("Connected to MongoDB")
 
-    } catch (error) {
-        
+    } catch (error) {     
         console.log("Error connecting to MongoDB - Error")
         console.log(error)
     }
